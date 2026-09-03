@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Kani! ❤️</title>
+  <style>
+    :root {
+      --bg-pink: #ffb6c1;
+      --card-bg: #ffffff;
+      --accent-pink: #ff4d6d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-pink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1.title {
+      color: #b5179e;
+      margin-top: 10px;
+      font-size: 2rem;
+      text-align: center;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.6);
+    }
+
+    /* Balloon Section */
+    .balloon-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 20px;
+      height: 250px;
+      margin: 30px 0;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .balloon-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .balloon {
+      width: 70px;
+      height: 90px;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      cursor: pointer;
+      position: relative;
+      animation: float 3s ease-in-out infinite alternate;
+      transition: transform 0.2s ease, opacity 0.3s ease;
+      box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1);
+    }
+
+    .balloon::after {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 25px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .balloon.red { background-color: #ff4d4d; animation-delay: 0s; }
+    .balloon.pink { background-color: #ff66b2; animation-delay: 0.5s; }
+    .balloon.blue { background-color: #4da6ff; animation-delay: 1s; }
+    .balloon.yellow { background-color: #ffd700; animation-delay: 1.5s; }
+
+    .pop-text {
+      position: absolute;
+      top: 30px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #7209b7;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .pop-text.visible {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+
+    .balloon.popped {
+      opacity: 0;
+      transform: scale(1.5);
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-15px); }
+    }
+
+    /* Action Buttons */
+    .nav-buttons {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      background-color: #fff;
+      color: #b5179e;
+      border: 2px solid #b5179e;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #b5179e;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .content-section {
+      width: 100%;
+      max-width: 700px;
+      display: none;
+      animation: fadeIn 0.5s ease-in-out forwards;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    /* Memories Gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.4);
+      padding: 20px;
+      border-radius: 15px;
+      backdrop-filter: blur(5px);
+    }
+
+    .photo-card {
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .photo-card p {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    /* Letter Display */
+    .letter-card {
+      background-color: var(--card-bg);
+      padding: 35px 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      line-height: 1.8;
+      font-size: 1.05rem;
+      color: #2b2b2b;
+      white-space: pre-line;
+      border: 1px solid #ffe6e9;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="title">✨ Tap the balloons! ✨</h1>
+
+  <!-- Balloons Section -->
+  <div class="balloon-container">
+    <div class="balloon-wrapper">
+      <div class="pop-text" id="txt1">Happy</div>
+      <div class="balloon red" onclick="popBalloon(this, 'txt1')"></div>
+    </div>
+    <div class="balloon-wrapper">
+      <div class="pop-text" id="txt2">Birthday</div>
+      <div class="balloon pink" onclick="popBalloon(this, 'txt2')"></div>
+    </div>
+    <div class="balloon-wrapper">
+      <div class="pop-text" id="txt3">Kani</div>
+      <div class="balloon blue" onclick="popBalloon(this, 'txt3')"></div>
+    </div>
+    <div class="balloon-wrapper">
+      <div class="pop-text" id="txt4">🎂</div>
+      <div class="balloon yellow" onclick="popBalloon(this, 'txt4')"></div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-buttons">
+    <button class="btn" onclick="showSection('memories')">📸 Memories</button>
+    <button class="btn" onclick="showSection('letter')">💌 Letter</button>
+  </div>
+
+  <!-- Memories Section with Your ImgBB Photo Links -->
+  <div id="memories" class="content-section">
+    <div class="gallery-grid" id="gallery">
+      
+      <div class="photo-card">
+        <img src="https://i.ibb.co/hRcqhW4Z/image.jpg" alt="Memory 1">
+        <p>Precious Moment 💕</p>
+      </div>
+
+      <div class="photo-card">
+        <img src="https://i.ibb.co/NgxqFHnY/image.jpg" alt="Memory 2">
+        <p>Beautiful Days ✨</p>
+      </div>
+
+      <div class="photo-card">
+        <img src="https://i.ibb.co/jkpWMjC8/image.jpg" alt="Memory 3">
+        <p>1 Year & 6 Months ❤️</p>
+      </div>
+
+      <div class="photo-card">
+        <img src="https://i.ibb.co/x8CR62TJ/image.jpg" alt="Memory 4">
+        <p>My Person 🏡</p>
+      </div>
+
+      <div class="photo-card">
+        <img src="https://i.ibb.co/k2TQxghh/image.jpg" alt="Memory 5">
+        <p>Together Forever 🌸</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Letter Section -->
+  <div id="letter" class="content-section">
+    <div class="letter-card">
+Happy Birthday to the most beautiful person in my life. ❤️🎂✨
+
+Today is not just your birthday, it’s a reminder of how lucky I am that life brought you into mine. ☺️❤️ Honestly, meeting you and becoming a part of your life is one of the best things that has ever happened to me. 🌸
+
+The day I met you, and the day we decided to be together, became one of the most beautiful days of my life. ✨❤️ And if I could live that moment again, I would choose you all over again, without thinking twice. 😘❤️
+
+It has been 1 year and 6 months since we started this beautiful journey together, and I don’t want it to end here. ❤️ I want us to stay together through every season of life — in every good moment, every difficult moment, every smile, every tear, every success, and every challenge that comes our way. 💕🌸
+
+I want to be there for you, always. Not just for today, not just for a few years, but for as long as life allows us to be together. ❤️♾️
+
+In these 1 year and 6 months, we have seen so much together. We have had beautiful days that we will always remember, and we have also had days that were incredibly difficult. 💕 Sometimes things became so bad that we probably wondered how we would get through them. But somehow, we always did. ☺️❤️
+
+We held each other when things were difficult. 🫂💕 We supported each other when one of us was struggling. We learned from every situation instead of letting it break us. ✨ And maybe that is what makes our relationship so special — we didn’t just love each other in the good times; we learned how to love each other even more in the bad times. ❤️
+
+We have made mistakes, too. But we learned to say sorry, to forgive, to understand, and most importantly, to never let the same mistakes come between us again. ☺️💕 Every mistake taught us something. Every difficult situation made us understand each other a little more. ✨ And today, I feel like we know each other in a way that words sometimes cannot explain. ❤️
+
+I know your happiness, your silence, your mood, your little habits, your fears, your dreams, and even the things you don't always say out loud. 🥹💕 And you know so much about me too.
+
+Somewhere along this journey, you stopped being just my girlfriend and became my person — someone I can call home. ❤️🏡✨
+
+And honestly, there is something so beautiful about having one person who feels like home, comfort, love, and peace all at once. 🌸❤️
+
+I love you more than I can put into words. 😘✨☺️
+And the most beautiful thing is that my love for you doesn’t feel like something that belongs only to today. It feels like something I want to keep choosing every single day. ❤️♾️
+
+If life gives me a thousand chances, I would still want to find you in every one of them. ✨💕
+In every lifetime, in every story, in every version of my life — I would still choose you. ❤️🌸
+
+On your birthday, I just want you to know one thing:
+
+I am proud of us. ❤️
+Proud of everything we have survived. 💕
+Proud of everything we have learned. ✨
+Proud of how we have grown together. ☺️
+And most of all, I am grateful that through everything, we still choose each other. ❤️🫂
+
+I hope this new year of your life brings you endless happiness, peace, success, beautiful memories, and everything your heart wishes for. 🌸✨ You deserve every beautiful thing this world has to offer. ❤️
+
+And I hope I get to be beside you through all of it — celebrating your happiest moments, holding your hand through the difficult ones, and making a thousand more beautiful memories with you. 🫶🏻💕😘
+
+You are one of the most precious parts of my life, and I promise that I will keep loving you, caring for you, understanding you, and choosing you. ❤️☺️
+
+Happy Birthday, my love. ❤️🎂✨
+
+Thank you for coming into my life. 🌸
+Thank you for staying. ❤️
+Thank you for understanding me. ☺️
+Thank you for loving me. 💕
+And thank you for making my life a little more beautiful just by being in it. ✨🌸
+
+1 year and 6 months down, and I pray for a lifetime to go. ❤️♾️
+
+I love you today. 😘✨☺️
+I will love you tomorrow. 😘✨☺️
+I will love you through the good days and the bad ones. 💕
+I will love you when life feels easy and when life feels difficult. ❤️
+And as long as I have a heart that knows how to love, a part of that heart will always belong to you. ❤️♾️
+
+You are not just someone I love… you are someone I want to grow with, dream with, build a life with, and grow old with. 🌸💕✨
+
+I want your hand in my hand, your smile in my days, your happiness in my prayers, and your love in my life — always. ❤️🫂🌸
+
+Happy Birthday, my love. ❤️🎂😘✨
+
+Here’s to us — to everything we have been, everything we are, and everything we are still going to become together. ☺️💕✨
+
+No matter how many years pass, I hope we always look at each other and remember the two people who started this beautiful journey 1 year and 6 months ago. ❤️🌸♾️
+
+I choose you.
+I’ll keep choosing you.
+Today, tomorrow, and every day after that. ❤️😘✨☺️
+    </div>
+  </div>
+
+  <script>
+    function popBalloon(element, textId) {
+      element.classList.add('popped');
+      document.getElementById(textId).classList.add('visible');
+    }
+
+    function showSection(sectionId) {
+      document.querySelectorAll('.content-section').forEach(sec => {
+        sec.classList.remove('active');
+      });
+      document.getElementById(sectionId).classList.add('active');
+    }
+  </script>
+</body>
+</html>
+
