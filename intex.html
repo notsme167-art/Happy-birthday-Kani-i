@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Kani! ❤️</title>
+  <style>
+    :root {
+      --bg-pink: #fdf2f8; /* Soft pink background */
+      --card-bg: #ffffff;
+      --accent-pink: #ff4d6d;
+      --accent-purple: #8338ec;
+      --text-dark: #1f2937;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-pink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* Step 1 Title */
+    h1.step-title {
+      color: var(--accent-purple);
+      margin-top: 15px;
+      font-size: 1.8rem;
+      text-align: center;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+      font-weight: 700;
+    }
+
+    /* 2. BALLOONS (with Improved Spacing) */
+    .balloon-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 30px; /* Increased horizontal distance between balloons */
+      height: 280px;
+      margin: 30px 0;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .balloon-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .pop-text {
+      position: absolute;
+      top: -40px; /* Moves text *above* the balloon for more distance */
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--accent-purple);
+      opacity: 0;
+      transform: scale(0.5) translateY(20px);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+      text-align: center;
+      width: 150%; /* Prevents text from wrapping too early */
+    }
+
+    .pop-text.visible {
+      opacity: 1;
+      transform: scale(1.1) translateY(0);
+    }
+
+    .balloon {
+      width: 75px;
+      height: 95px;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      cursor: pointer;
+      position: relative;
+      animation: float 3s ease-in-out infinite alternate;
+      transition: transform 0.2s ease, opacity 0.3s ease;
+      box-shadow: inset -10px -10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* Small triangle knot at the bottom */
+    .balloon::before {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+    }
+
+    /* String */
+    .balloon::after {
+      content: "";
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 40px;
+      background: rgba(0,0,0,0.1);
+    }
+
+    .balloon.red { background-color: #ff4d4d; animation-delay: 0s; }
+    .balloon.red::before { border-bottom: 12px solid #ff4d4d; }
+
+    .balloon.pink { background-color: #ff66b2; animation-delay: 0.5s; }
+    .balloon.pink::before { border-bottom: 12px solid #ff66b2; }
+
+    .balloon.blue { background-color: #4da6ff; animation-delay: 1s; }
+    .balloon.blue::before { border-bottom: 12px solid #4da6ff; }
+
+    /* New CSS class for SVG cake */
+    .cake-pop {
+      opacity: 0;
+      transform: scale(0.5) translateY(20px);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      pointer-events: none;
+      width: 60px; /* Size of the high-quality cake graphic */
+      height: 60px;
+    }
+    .cake-pop.visible {
+      opacity: 1;
+      transform: scale(1.2) translateY(0);
+    }
+
+    .balloon.yellow { background-color: #ffd700; animation-delay: 1.5s; }
+    .balloon.yellow::before { border-bottom: 12px solid #ffd700; }
+
+    .balloon.popped {
+      opacity: 0;
+      transform: scale(1.5);
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-15px); }
+    }
+
+    /* Navigation Buttons (Tidier layout) */
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .btn {
+      background-color: #fff;
+      color: var(--accent-purple);
+      border: 2px solid var(--accent-purple);
+      padding: 14px 28px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(131, 56, 236, 0.1);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn:hover {
+      background-color: var(--accent-purple);
+      color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(131, 56, 236, 0.2);
+    }
+
+    .content-section {
+      width: 100%;
+      max-width: 800px;
+      display: none;
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    /* 1. Systematic PHOTO GALLERY (Beautiful Grid Layout) */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Adaptive grid system */
+      gap: 20px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 25px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .photo-card {
+      background: #fff;
+      padding: 12px;
+      border-radius: 15px;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .photo-card:hover {
+      transform: translateY(-5px) rotate(1deg); /* Playful hover effect */
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 200px; /* Consistent height for systematic grid */
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid #f1f5f9;
+    }
+
+    .photo-card p {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: #4b5563;
+      font-weight: 500;
+    }
+
+    /* 3. LETTER (Beautiful and Organized Text) */
+    .letter-card {
+      background-color: var(--card-bg);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(131, 56, 236, 0.1);
+      line-height: 1.9;
+      font-size: 1.1rem;
+      color: #2b2b2b;
+      white-space: pre-line;
+      border: 1px solid #fdf2f8;
+      background-image: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), 
+                        url('https://www.transparenttextures.com/patterns/lined-paper-2.png');
+    }
+
+    /* Title for the letter section */
+    .letter-card h2 {
+      font-size: 1.5rem;
+      color: var(--accent-purple);
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    /* Organized spacing between large text blocks */
+    .letter-card p {
+      margin-bottom: 1.6em;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Title Step 2 & 3 Combined for clarity -->
+  <h1 class="step-title">✨ Step 2 & 3: Clear Text, Spaced Balloons, Beautiful Cake! ✨</h1>
+
+  <!-- Balloons Section with Clear Text and High-Quality Cake -->
+  <div class="balloon-container">
+    <div class="balloon-wrapper">
+      <!-- FIXED TYPO: "Hppy" corrected to "Happy" and better spaced -->
+      <div class="pop-text" id="txt1">Happy</div>
+      <div class="balloon red" onclick="popBalloon(this, 'txt1')"></div>
+    </div>
+    <div class="balloon-wrapper">
+      <div class="pop-text" id="txt2">Birthday</div>
+      <div class="balloon pink" onclick="popBalloon(this, 'txt2')"></div>
+    </div>
+    <div class="balloon-wrapper">
+      <div class="pop-text" id="txt3">Kani</div>
+      <div class="balloon blue" onclick="popBalloon(this, 'txt3')"></div>
+    </div>
+    <div class="balloon-wrapper">
+      <!-- High-Quality SVG Cake Graphic replaced basic emoji -->
+      <div id="cake-svg" class="cake-pop">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C10.9 2 10 2.9 10 4V6H7C5.9 6 5 6.9 5 8V18C5 19.1 5.9 20 7 20H17C18.1 20 19 19.1 19 18V8C19 6.9 18.1 6 17 6H14V4C14 2.9 13.1 2 12 2Z" stroke="#8338ec" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M5 13H19" stroke="#8338ec" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 4V6" stroke="#8338ec" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 4V6" stroke="#8338ec" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 13V18M12 13V18M15 13V18" stroke="#8338ec" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+      </div>
+      <div class="balloon yellow" onclick="popCake(this)"></div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-buttons">
+    <button class="btn" onclick="showSection('memories')">📸 Memories Gallery</button>
+    <button class="btn" onclick="showSection('letter')">💌 My Letter</button>
+  </div>
+
+  <!-- 1. Systematic Photo Gallery Section -->
+  <div id="memories" class="content-section">
+    <div class="gallery-grid" id="gallery">
+      
+      <!-- Photo Card 1 -->
+      <div class="photo-card">
+        <img src="https://i.ibb.co/hRcqhW4Z/image.jpg" alt="Memory 1">
+        <p>A Moment to Cherish 💖</p>
+      </div>
+
+      <!-- Photo Card 2 -->
+      <div class="photo-card">
+        <img src="https://i.ibb.co/NgxqFHnY/image.jpg" alt="Memory 2">
+        <p>Beautiful Days ✨</p>
+      </div>
+
+      <!-- Photo Card 3 -->
+      <div class="photo-card">
+        <img src="https://i.ibb.co/jkpWMjC8/image.jpg" alt="Memory 3">
+        <p>1 Year & 6 Months ❤️</p>
+      </div>
+
+      <!-- Photo Card 4 -->
+      <div class="photo-card">
+        <img src="https://i.ibb.co/x8CR62TJ/image.jpg" alt="Memory 4">
+        <p>My Safe Haven 🏡</p>
+      </div>
+
+      <!-- Photo Card 5 -->
+      <div class="photo-card">
+        <img src="https://i.ibb.co/k2TQxghh/image.jpg" alt="Memory 5">
+        <p>Together Forever 🌸</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 3. BEAUTIFUL LETTER Section with Clean Spacing -->
+  <div id="letter" class="content-section">
+    <div class="letter-card">
+        <h2>My Dearest Kani,</h2>
+
+        <p>Happy Birthday to the most beautiful person in my life. ❤️🎂✨
+
+Today is not just your birthday, it’s a reminder of how lucky I am that life brought you into mine. ☺️❤️ Honestly, meeting you and becoming a part of your life is one of the best things that has ever happened to me. 🌸</p>
+
+        <p>The day I met you, and the day we decided to be together, became one of the most beautiful days of my life. ✨❤️ And if I could live that moment again, I would choose you all over again, without thinking twice. 😘❤️
+
+It has been 1 year and 6 months since we started this beautiful journey together, and I don’t want it to end here. ❤️ I want us to stay together through every season of life — in every good moment, every difficult moment, every smile, every tear, every success, and every challenge that comes our way. 💕🌸
+
+I want to be there for you, always. Not just for today, not just for a few years, but for as long as life allows us to be together. ❤️♾️</p>
+
+        <p>In these 1 year and 6 months, we have seen so much together. We have had beautiful days that we will always remember, and we have also had days that were incredibly difficult. 💕 Sometimes things became so bad that we probably wondered how we would get through them. But somehow, we always did. ☺️❤️
+
+We held each other when things were difficult. 🫂💕 We supported each other when one of us was struggling. We learned from every situation instead of letting it break us. ✨ And maybe that is what makes our relationship so special — we didn’t just love each other in the good times; we learned how to love each other even more in the bad times. ❤️
+
+We have made mistakes, too. But we learned to say sorry, to forgive, to understand, and most importantly, to never let the same mistakes come between us again. ☺️💕 Every mistake taught us something. Every difficult situation made us understand each other a little more. ✨ And today, I feel like we know each other in a way that words sometimes cannot explain. ❤️</p>
+
+        <p>I know your happiness, your silence, your mood, your little habits, your fears, your dreams, and even the things you don't always say out loud. 🥹💕 And you know so much about me too.
+
+Somewhere along this journey, you stopped being just my girlfriend and became my person — someone I can call home. ❤️🏡✨
+
+And honestly, there is something so beautiful about having one person who feels like home, comfort, love, and peace all at once. 🌸❤️</p>
+
+        <p>I love you more than I can put into words. 😘✨☺️
+And the most beautiful thing is that my love for you doesn’t feel like something that belongs only to today. It feels like something I want to keep choosing every single day. ❤️♾️
+
+If life gives me a thousand chances, I would still want to find you in every one of them. ✨💕
+In every lifetime, in every story, in every version of my life — I would still choose you. ❤️🌸</p>
+
+        <p>On your birthday, I just want you to know one thing:
+
+I am proud of us. ❤️
+Proud of everything we have survived. 💕
+Proud of everything we have learned. ✨
+Proud of how we have grown together. ☺️
+And most of all, I am grateful that through everything, we still choose each other. ❤️🫂</p>
+
+        <p>I hope this new year of your life brings you endless happiness, peace, success, beautiful memories, and everything your heart wishes for. 🌸✨ You deserve every beautiful thing this world has to offer. ❤️
+
+And I hope I get to be beside you through all of it — celebrating your happiest moments, holding your hand through the difficult ones, and making a thousand more beautiful memories with you. 🫶🏻💕😘
+
+You are one of the most precious parts of my life, and I promise that I will keep loving you, caring for you, understanding you, and choosing you. ❤️☺️
+
+Happy Birthday, my love. ❤️🎂✨
+
+Thank you for coming into my life. 🌸
+Thank you for staying. ❤️
+Thank you for understanding me. ☺️
+Thank you for loving me. 💕
+And thank you for making my life a little more beautiful just by being in it. ✨🌸
+
+1 year and 6 months down, and I pray for a lifetime to go. ❤️♾️
+
+I love you today. 😘✨☺️
+I will love you tomorrow. 😘✨☺️
+I will love you through the good days and the bad ones. 💕
+I will love you when life feels easy and when life feels difficult. ❤️
+And as long as I have a heart that knows how to love, a part of that heart will always belong to you. ❤️♾️
+
+You are not just someone I love… you are someone I want to grow with, dream with, build a life with, and grow old with. 🌸💕✨
+
+I want your hand in my hand, your smile in my days, your happiness in my prayers, and your love in my life — always. ❤️🫂🌸
+
+Happy Birthday, my love. ❤️🎂😘✨
+
+Here’s to us — to everything we have been, everything we are, and everything we are still going to become together. ☺️💕✨
+
+No matter how many years pass, I hope we always look at each other and remember the two people who started this beautiful journey 1 year and 6 months ago. ❤️🌸♾️
+
+I choose you.
+I’ll keep choosing you.
+Today, tomorrow, and every day after that. ❤️😘✨☺️</p>
+    </div>
+  </div>
+
+  <script>
+    function popBalloon(element, textId) {
+      element.classList.add('popped');
+      document.getElementById(textId).classList.add('visible');
+    }
+
+    // Dedicated function for the refined cake pop animation
+    function popCake(balloonElement) {
+      balloonElement.classList.add('popped');
+      document.getElementById('cake-svg').classList.add('visible');
+    }
+
+    function showSection(sectionId) {
+      // systematically hide all sections
+      document.querySelectorAll('.content-section').forEach(sec => {
+        sec.classList.remove('active');
+      });
+      // systematically show the requested one
+      document.getElementById(sectionId).classList.add('active');
+    }
+  </script>
+</body>
+</html>
